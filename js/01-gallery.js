@@ -6,6 +6,8 @@ const itemsMarkup = createGalleryItemsMarkup(galleryItems);
 
 galleryContainer.insertAdjacentHTML('beforeend', itemsMarkup);
 
+galleryContainer.addEventListener('click', onGalleryContainerClick);
+
 function createGalleryItemsMarkup(items) {
     return items.map(({ preview, original, description }) => {
         return `
@@ -23,4 +25,15 @@ function createGalleryItemsMarkup(items) {
     })
         .join('');
 } 
+
+function onGalleryContainerClick(event) {
+    event.preventDefault();
+
+    if (!event.target.classList.contains('gallery__image')) {
+        return;
+    }
+    console.log(event.target.dataset.source)
+}
+
+
 
