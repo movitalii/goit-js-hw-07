@@ -6,7 +6,9 @@ const itemsMarkup = createGalleryItemsMarkup(galleryItems);
 
 galleryContainer.insertAdjacentHTML('beforeend', itemsMarkup);
 
-galleryContainer.addEventListener('click', onGalleryContainerClick);
+galleryContainer.addEventListener('click', onClickModalOpen);
+
+
 
 function createGalleryItemsMarkup(items) {
     return items.map(({ preview, original, description }) => {
@@ -26,18 +28,30 @@ function createGalleryItemsMarkup(items) {
         .join('');
 } 
 
-function onGalleryContainerClick(event) {
-    event.preventDefault();
+let instance = null;
+
+function onClickModalOpen(event) {
+    event.preventDefault(); 
+
+    window.addEventListener('keydown', onEscModalClose);
 
     if (!event.target.classList.contains('gallery__image')) {
         return;
     }    
-    const instance = basicLightbox.create(`<img 
+    instance = basicLightbox.create(`<img 
                 class="gallery__image"
                 src="${event.target.dataset.source}"
                 />`)
 
     instance.show()
+}
+
+function onEscModalClose (event) {
+    console.log(event.code); 
+    if (event.code === 'Escape') {        
+    window.removeEventListener('keydown', onEscModalClose);    
+    instance.close();
+    }
 }
 
 
